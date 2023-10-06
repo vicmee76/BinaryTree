@@ -443,8 +443,7 @@ namespace ConsoleApp1
 
             while (QueueNodes.Count > 0)
             {
-                Node current = QueueNodes.Peek();
-
+                Node current = QueueNodes.Dequeue();
                 Console.Write(current.data + " -> ");
 
                 if (current.left != null)
@@ -456,11 +455,6 @@ namespace ConsoleApp1
                 {
                     QueueNodes.Enqueue(current.right);
                 }
-
-                if (QueueNodes.Count > 0)
-                {
-                    var remove = QueueNodes.Dequeue();
-                }
             }
         }
 
@@ -469,6 +463,7 @@ namespace ConsoleApp1
         {
             data.Sort();
             var sorts = new SortedList<int, int>();
+
 
             for(int i =0; i < data.Count(); i++)
             {
@@ -538,42 +533,43 @@ namespace ConsoleApp1
             var max = BSTHeight(node);
             return max;
         }
-    }
 
 
 
-    public class LinkedList
-    {
-        Node head = null;
-
-        public void insertNode(int data)
+        /*** Print the longest path from root to leaf in a Binary tree
+         * 
+         * check if the root node is null and return an empty list
+         * 
+         * Get all the left sub tree from the root node
+         * Get all the right sub tree from the right node 
+         * Add the root node to the result of the left sub tree and the right sub tree.
+         * 
+         * Check the left and right which has more length and return the highest;
+         * 
+         */
+        private List<int> LongestPathFromRoot(Node node)
         {
-            Node newNode = new Node(data);
+            if(node == null) return new List<int>();
 
-            if (head == null)
+            var left = LongestPathFromRoot(node.left);
+            var right = LongestPathFromRoot(node.right);
+
+            if (left.Count > right.Count)
             {
-                head = newNode;
+                left.Add(node.data);
             }
             else
             {
-                newNode.next = head;
-                head = newNode;
+                right.Add(node.data);
             }
-        }
 
-
-        public void PrintNode()
-        {
-            Node current = head;
-
-            while(current != null)
-            {
-                Console.WriteLine(current.data + "->");
-                current = current.next;
-            } 
-
+            return left.Count > right.Count ? left : right;
         }
     }
+
+
+
+    
 
 
 }
