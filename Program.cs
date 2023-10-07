@@ -9,7 +9,6 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             BianryTree tree = new BianryTree();
-            LinkedList list = new LinkedList();
 
             tree.Insert(3);
             tree.Insert(2);
@@ -71,12 +70,7 @@ namespace ConsoleApp1
 
 
             Console.WriteLine("\n");
-
-            list.insertNode(1);
-            list.insertNode(2);
-            list.insertNode(3);
-
-            list.PrintNode();
+;
 
             Console.WriteLine("\n");
 
@@ -461,11 +455,9 @@ namespace ConsoleApp1
 
         private List<int> SortedList(List<int> data)
         {
-            data.Sort();
             var sorts = new SortedList<int, int>();
 
-
-            for(int i =0; i < data.Count(); i++)
+            for (int i = 0; i < data.Count(); i++)
             {
                 sorts.Add(i, data[i]);
             }
@@ -480,14 +472,7 @@ namespace ConsoleApp1
             var inOrderList = values;
             var orderList = SortedList(values);
 
-            if (inOrderList.SequenceEqual(orderList))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return inOrderList.SequenceEqual(orderList) == true ? true : false;
         }
 
 
@@ -564,6 +549,54 @@ namespace ConsoleApp1
             }
 
             return left.Count > right.Count ? left : right;
+        }
+
+
+
+
+
+        /** Get the in order sucessor of a list
+         * 
+         * Firt check if the root node and the given nood is null and return 0
+         * 
+         * Check if the right node is not null, if true, move to the most left node and return the least node
+         * 
+         * Else, if the right node is null, loop through the root node, 
+         * 
+         * if the left data is less than the root data, set the successor then go to the left node, else, go to the right node
+         * 
+         */
+        private int InOrderSuccessor(Node root, Node node)
+        {
+            Node successor = null;
+
+            if(root == null || node == null) return 0;
+
+            if(node.right != null)
+            {
+                return getMostLeft(node.right);
+            }
+            else
+            {
+                while(root != null)
+                {
+                    if(node.data < root.data)
+                    {
+                        successor = root;
+                        root = root.left;   
+                    }
+                    else if(node.data > root.data)
+                    {
+                        root = root.right;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return successor.data;
         }
     }
 
