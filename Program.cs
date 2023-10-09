@@ -635,6 +635,13 @@ namespace ConsoleApp1
         }
 
 
+
+        /***
+         * Fine the length of the longest path which contains nodes witht the same exact value.
+         * 
+         * This path must not pass through the root node.
+         * 
+         */
         public int longestUnivaluePath(Node node)
         {
             int result = 0;
@@ -651,9 +658,49 @@ namespace ConsoleApp1
 
                 if(node.left != null)
                 {
-                    if(next.)
+                    if(next.val == node.left.val) result ++;
+                    queue.Enqueue(node.left);
+                }
+
+                if (node.right != null)
+                {
+                    if (next.val == node.right.val) result++;
+                    queue.Enqueue(node.right);
                 }
             }
+
+            return result;
+        }
+
+
+
+
+
+
+        public int[] deleteMiddleStackItem(Stack<int> stack, int N)
+        {
+            int count = stack.Count;
+            int[] arr = new int[N];
+            int index = 0;
+
+            if (count == 0) return null;
+
+            if((N + 1) % 2 == 1) // odd number 
+            {
+                index = (N + 1) / 2;
+            }
+            else // even number
+            {
+                index = ((N + 1) / 2 - 1);
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                if(index != i)
+                    arr[i] = stack.Pop();
+            }
+
+            return arr;
         }
     }
 
