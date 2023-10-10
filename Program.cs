@@ -99,14 +99,14 @@ namespace ConsoleApp1
 
     public class Node
     {
-        public int data;
+        public int val;
         public Node left;
         public Node right;
         public Node next;
 
         public Node(int data)
         {
-            this.data = data;
+            this.val = data;
             this.left = null;
             this.right = null;
             this.next = null;
@@ -195,7 +195,7 @@ namespace ConsoleApp1
         private void InsertRightORLeftNode(Node node, int data)
         {
             // for inserting left node
-            if (data < node.data)
+            if (data < node.val)
             {
                 if (node.left == null)
                 {
@@ -247,19 +247,19 @@ namespace ConsoleApp1
                 {
                     while (root != null)
                     {
-                        if (node.data < root.data)
+                        if (node.val < root.val)
                         {
                             succes = root;
                             root = root.left;
                         }
-                        else if (node.data > root.data)
+                        else if (node.val > root.val)
                             root = root.right;
                         else
                         {
                             break;
                         }
                     }
-                    Console.WriteLine("Successor : " + succes?.data);
+                    Console.WriteLine("Successor : " + succes?.val);
                 }
                 
             }
@@ -270,7 +270,7 @@ namespace ConsoleApp1
         {
             if(node.left == null)
             {
-                return node.data;
+                return node.val;
             }
             else
             {
@@ -311,7 +311,7 @@ namespace ConsoleApp1
         {
             var val = Finds(data, root);
 
-            Console.WriteLine("\nFound data : " + val.data);
+            Console.WriteLine("\nFound data : " + val.val);
         }
 
 
@@ -362,7 +362,7 @@ namespace ConsoleApp1
 
         private void PreOrder(Node nodes)
         {
-            Console.Write(nodes.data + " -> ");
+            Console.Write(nodes.val + " -> ");
 
             if (nodes.left != null)
             {
@@ -385,7 +385,7 @@ namespace ConsoleApp1
                 InOrder(nodes.left);
             }
 
-            values.Add(nodes.data);
+            values.Add(nodes.val);
 
             if (nodes.right != null)
             {
@@ -415,7 +415,7 @@ namespace ConsoleApp1
                 PostOrder(nodes.right);
             }
 
-            Console.Write(nodes.data + " -> ");
+            Console.Write(nodes.val + " -> ");
         }
 
 
@@ -423,17 +423,17 @@ namespace ConsoleApp1
         // find the node of a particular value
         private Node Finds(int data, Node node)
         {
-            if(data == node.data)
+            if(data == node.val)
             {
                 return node;
             }
             else
             {
-                if (data < node.data && node.left != null)
+                if (data < node.val && node.left != null)
                 {
                     return Finds(data, node.left);
                 }
-                else if(data >= node.data && node.right != null)
+                else if(data >= node.val && node.right != null)
                 {
                     return Finds(data, node.right);
                 }
@@ -454,7 +454,7 @@ namespace ConsoleApp1
             while (QueueNodes.Count > 0)
             {
                 Node current = QueueNodes.Dequeue();
-                Console.Write(current.data + " -> ");
+                Console.Write(current.val + " -> ");
 
                 if (current.left != null)
                 {
@@ -557,11 +557,11 @@ namespace ConsoleApp1
 
             if (left.Count > right.Count)
             {
-                left.Add(node.data);
+                left.Add(node.val);
             }
             else
             {
-                right.Add(node.data);
+                right.Add(node.val);
             }
 
             return left.Count > right.Count ? left : right;
@@ -596,12 +596,12 @@ namespace ConsoleApp1
             {
                 while(root != null)
                 {
-                    if(node.data < root.data)
+                    if(node.val < root.val)
                     {
                         successor = root;
                         root = root.left;   
                     }
-                    else if(node.data > root.data)
+                    else if(node.val > root.val)
                     {
                         root = root.right;
                     }
@@ -612,7 +612,111 @@ namespace ConsoleApp1
                 }
             }
 
-            return successor.data;
+            return successor.val;
+        }
+
+
+        
+        /**
+         * Check if a binary tree is a special binary tree. 
+         * 
+         * Such that all the nodes and sub-nodes has 0 or 2 child nodes.
+         * 
+         */ 
+
+        private bool isSpecialBinaryTree(Node node)
+        {
+            bool result = true;
+
+            if (node == null) return result;
+
+            if (node.left != null && node.right == null)
+            {
+                result = false;
+            }
+            else if (node.right != null && node.left == null)
+            {
+                result = false;
+            }
+            else if(node.right == null && node.left == null)
+            {
+                result = true; 
+            }
+            else
+            {
+                result = (isSpecialBinaryTree(node.left) && isSpecialBinaryTree(node.right));
+            }
+
+            return result;
+        }
+
+
+
+        /***
+         * Fine the length of the longest path which contains nodes witht the same exact value.
+         * 
+         * This path must not pass through the root node.
+         * 
+         */
+        public int longestUnivaluePath(Node node)
+        {
+            int result = 0;
+
+            if(node == null) return result;
+
+            Queue<Node> queue = new Queue<Node>();
+
+            queue.Enqueue(node);
+
+            while (queue.Count > 0)
+            {
+                Node next = queue.Dequeue();
+
+                if(node.left != null)
+                {
+                    if(next.val == node.left.val) result ++;
+                    queue.Enqueue(node.left);
+                }
+
+                if (node.right != null)
+                {
+                    if (next.val == node.right.val) result++;
+                    queue.Enqueue(node.right);
+                }
+            }
+
+            return result;
+        }
+
+
+
+
+
+
+        public int[] deleteMiddleStackItem(Stack<int> stack, int N)
+        {
+            int count = stack.Count;
+            int[] arr = new int[N];
+            int index = 0;
+
+            if (count == 0) return null;
+
+            if((N + 1) % 2 == 1) // odd number 
+            {
+                index = (N + 1) / 2;
+            }
+            else // even number
+            {
+                index = ((N + 1) / 2 - 1);
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                if(index != i)
+                    arr[i] = stack.Pop();
+            }
+
+            return arr;
         }
     }
 
