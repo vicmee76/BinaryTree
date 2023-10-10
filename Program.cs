@@ -10,6 +10,13 @@ namespace ConsoleApp1
         {
             BianryTree tree = new BianryTree();
 
+
+            string s = "abc";
+            s.ToUpper();
+            Console.WriteLine(s);    
+
+
+
             tree.Insert(3);
             tree.Insert(2);
             tree.Insert(1);
@@ -366,6 +373,8 @@ namespace ConsoleApp1
             {
                 PreOrder(nodes.right);
             }
+
+           
         }
 
 
@@ -383,10 +392,17 @@ namespace ConsoleApp1
                 InOrder(nodes.right);
             }
 
+            var r = values.Select(c => c * c).Take(5).Distinct().OrderBy(c => c);
+
+            Dictionary<int, string> dict = new Dictionary<int, string>()
+            {
+                {1, "uuu" },
+            };
+
             return values;
         }
 
-
+        [Obsolete(message:"",false)]
         private void PostOrder(Node nodes)
         {
             if (nodes.left != null)
